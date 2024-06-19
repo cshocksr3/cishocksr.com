@@ -5,14 +5,21 @@ import { Icons } from "./icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const NavBar = () => {
   const pathname = usePathname();
   return (
     <nav className="flex items-center space-x-4 lg:space-x-6">
       <Link href="/" className="mr-6 flex items-center space-x-2">
-        <Icons.logo className="h-6 w-6" />
-        <span className="font-bold">{siteConfig.name}</span>
+        <Image
+          src="/logo.png"
+          width="10"
+          height="10"
+          className="h-10 w-10 rounded-full"
+          alt="cishocksr logo"
+        />
+        <span className="font-bold">C.Shock</span>
       </Link>
       <Link
         href="/blog"

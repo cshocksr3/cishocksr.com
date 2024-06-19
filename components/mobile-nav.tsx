@@ -8,6 +8,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
 import { Icons } from "./icons";
 import { siteConfig } from "@/config/site";
+import Image from "next/image";
 
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
@@ -24,10 +25,16 @@ const MobileNav = () => {
         <MobileLink
           onOpenChange={setOpen}
           href="/"
-          className="flex items-center"
+          className="mr-6 space-x-2 flex items-center"
         >
-          <Icons.logo className="mr-2 h-4 w-4" />
-          <span className="font-bold">{siteConfig.name}</span>
+          <Image
+            src="/logo.png"
+            width="10"
+            height="10"
+            className="h-10 w-10 rounded-full"
+            alt="cishocksr logo"
+          />
+          <span className="font-bold"> C.Shock</span>
         </MobileLink>
         <div className="flex flex-col gap-3 mt-3">
           <MobileLink onOpenChange={setOpen} href="/blog">

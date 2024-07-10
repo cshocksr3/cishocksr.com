@@ -7,6 +7,7 @@ export const siteConfig = {
     twitter: "https://x.com/cshocksr",
     github: "https://github.com/cshocksr3",
     linkedin: "https://linkedin.com/in/christopherishockley",
+    email: "shock@cishocksr.com"
   },
 };
 

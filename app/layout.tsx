@@ -1,17 +1,24 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import {Playfair_Display, Source_Code_Pro  } from 'next/font/google'
 import "./globals.css";
+import Providers from "@/components/providers";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import { cn } from "@/lib/utils";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+
+
+const sans = Source_Code_Pro({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-sans',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-serif',
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,11 +31,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    <html lang="en" suppressHydrationWarning>
+        <body
+        className={cn(
+          'flex min-h-screen flex-col font-sans antialiased',
+          sans.variable,
+          playfair.variable
+        )}
       >
-        {children}
+        <Providers>
+          <Header />
+          <main className="grow">
+          {children}
+          </main>
+          <Footer />
+          </Providers>
+        
       </body>
     </html>
   );

@@ -13,7 +13,7 @@ export async function generateStaticParams() {
   return slugs;
 }
 
-const Post = async ({params}: {params: {slug: string}}) => {
+const Post = async ({params}: Awaited<{params: {slug: string}}>) => {
 
     const {slug} = await params
     const post = await getPostsBySlug(slug)

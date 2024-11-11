@@ -1,14 +1,21 @@
 import MDXContent from "@/components/mdx-content"
-import { getPostsBySlug } from "@/lib/posts"
+import { getPosts, getPostsBySlug } from "@/lib/posts"
 import { formatDate } from "@/lib/utils"
 import { ArrowLeftIcon } from "@radix-ui/react-icons"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
+export async function generateStaticParams() {
+  const posts = await getPosts()
+  const slugs = posts.map(post => ({slug: post.slug}))
+
+  return slugs;
+}
+
 const Post = async ({params}: {params: {slug: string}}) => {
 
-    const {slug} = params
+    const {slug} = await params
     const post = await getPostsBySlug(slug)
 
     if(!post) {

@@ -16,9 +16,9 @@ export async function generateStaticParams() {
 
 export default async function Project({
   params
-}: Awaited<{
-  params: { slug: string }
-}>) {
+}: {
+  params: Promise<{ slug: string }>
+}) {
   const { slug } = await params
   const project = await getProjectBySlug(slug)
 

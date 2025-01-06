@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/components/nav-bar";
 import Footer from "@/components/footer";
 import { Providers } from "@/components/provideres";
-import { Header } from "@/components/header";
+import Header from "@/components/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,11 +39,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="bg-gray-50 text-gray-800">
         <Providers>
           <div className="relative flex min-h-dvh flex-col bg-background">
-            <NavBar />
+            <Header />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>

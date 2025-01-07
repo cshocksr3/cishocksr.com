@@ -3,22 +3,23 @@ import { defineCollection, defineConfig, s } from "velite";
 
 // content/posts/hello-world.mdx
 
-const computedFields = <T extends {slug: string}>(data: T) => ({
-    ...data,
-    slugAsParams: data.slug.split("/").slice(2).join("/")
-})
+const computedFields = <T extends { slug: string }>(data: T) => ({
+  ...data,
+  slugAsParams: data.slug.split("/").slice(1).join("/"),
+});
 
 
 const posts = defineCollection({
-    name: "Blog",
-    pattern: "content/post/**/*.mdx",
-    schema: s.object({
-        slug: s.path(),
-        title: s.string().max(99),
-        description: s.string().max(999).optional(),
-        date: s.isodate(),
-        published: s.boolean().default(true),
-        body: s.mdx()
+  name: "Post",
+  pattern: "blog/**/*.mdx",
+  schema: s
+    .object({
+      slug: s.path(),
+      title: s.string().max(99),
+      description: s.string().max(999).optional(),
+      date: s.isodate(),
+      published: s.boolean().default(true),
+      body: s.mdx(),
     })
     .transform(computedFields),
 });

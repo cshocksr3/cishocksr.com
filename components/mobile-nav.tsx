@@ -5,73 +5,30 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
 import Link, { LinkProps } from "next/link";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { Icons } from "./icons";
+import { siteConfig } from "@/config/site";
 
-interface MobileNavProps {
-  links: { href: string; label: string }[];
-}
-
-
-const MobileNav: React.FC<MobileNavProps> = ({ links }) => {
+export default function MobileNav() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-
- 
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      {/* Toggle Button */}
       <SheetTrigger asChild>
-        <Button variant="outline" className="w-10 px-0 sm:hidden" aria-label="Open menu">
+        <Button variant="outline" className="w-10 px-0 sm:hidden">
           <Menu className="h-5 w-5" />
+          <span className="sr-only">Toggle Theme</span>
         </Button>
       </SheetTrigger>
-
-      {/* Sheet Content */}
-      <SheetContent side="right" className="space-y-4">
-        {/* Branding */}
-        <MobileLink onOpenChange={setOpen} href="/" className="flex items-center space-x-2">
-          <Image
-            src="/logo.png"
-            width="40"
-            height="40"
-            className="h-10 w-10 rounded-full"
-            alt="C.Shock logo"
-          />
-          <span className="font-bold text-lg">C.Shock</span>
+      <SheetContent side="right">
+        <MobileLink href="/" className="flex items-center">
+          <Icons.logo className="mr-2 h-4 w-4" />
+          <span className="font-bold">{siteConfig.name}</span>
         </MobileLink>
-
-        {/* Links */}
-        <div className="flex flex-col gap-3 mt-3">
-          {links.map((link) => (
-            <MobileLink
-              key={link.href}
-              href={link.href}
-              onOpenChange={setOpen}
-              className={cn(
-                "text-sm font-medium hover:text-primary",
-                pathname === link.href ? "text-primary" : "text-foreground/60"
-              )}
-              aria-current={pathname === link.href ? "page" : undefined}
-            >
-              {link.label}
-            </MobileLink>
-          ))}
-
-          {/* External Links */}
-          <Link target="_blank" rel="noreferrer" href="https://github.com/cshocksr3" className="text-sm font-medium hover:text-primary">
-            GitHub
-          </Link>
-          <Link target="_blank" rel="noreferrer" href="https://x.com/cshocksr" className="text-sm font-medium hover:text-primary">
-            Twitter
-          </Link>
-        </div>
       </SheetContent>
     </Sheet>
   );
-};
+}
 
 interface MobileLinkProps extends LinkProps {
   children: React.ReactNode;
@@ -82,26 +39,22 @@ interface MobileLinkProps extends LinkProps {
 function MobileLink({
   href,
   onOpenChange,
-  children,
   className,
+  children,
   ...props
 }: MobileLinkProps) {
-  const pathname = usePathname();
-
+  const router = useRouter();
   return (
     <Link
       href={href}
-      onClick={() => onOpenChange?.(false)}
-      className={cn(
-        "text-sm font-medium transition-colors",
-        pathname === href ? "text-primary" : "text-foreground/60",
-        className
-      )}
+      onClick={() => {
+        router.push(href.toString());
+        onOpenChange?.(false);
+      }}
+      className={className}
       {...props}
     >
       {children}
     </Link>
   );
 }
-
-export default MobileNav;

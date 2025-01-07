@@ -5,7 +5,7 @@ import { buttonVariants } from "./ui/button";
 import { Icons } from "./icons";
 import MobileNav from "./mobile-nav";
 import NavBar from "./nav-bar";
-// import ModeToggle from "./modeToggle";
+import ModeToggle from "./dark-toggle";
 
 const Header = () => {
   return (
@@ -44,8 +44,8 @@ const Header = () => {
                 <span className="sr-only">Twitter</span>
               </div>
             </Link>
-            {/* <ModeToggle /> */}
-            {/* <MobileNav /> */}
+            <ModeToggle />
+            <MobileNav />
           </nav>
         </div>
       </div>

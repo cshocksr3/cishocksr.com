@@ -1,55 +1,58 @@
+"use client";
+
 import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { buttonVariants } from "./ui/button";
 import { Icons } from "./icons";
-import MobileNav from "./mobile-nav";
-import NavBar from "./nav-bar";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 import ModeToggle from "./dark-toggle";
+import MobileNav from "./mobile-nav";
+import { navLinks } from "./nav-links";
 
 const Header = () => {
+  const pathname = usePathname();
+
   return (
     <header className="z-10 sticky top-0 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
-        <NavBar />
-        <div className="flex flex-1 items-center justify-end space-x-2">
-          <nav className="flex items-center">
+      <div className="container flex items-center justify-between h-16 max-w-screen-2xl px-4">
+        {/* Logo */}
+        <div className="flex items-center">
+          <Link href="/" className="flex items-center space-x-2">
+            <Icons.logo className="h-6 w-6" />
+            <span className="font-bold">{siteConfig.name}</span>
+          </Link>
+        </div>
+
+        {/* Navigation Links (Desktop) */}
+        <nav className="hidden md:flex space-x-6">
+          {navLinks.map((link) => (
             <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-primary",
+                pathname === link.href
+                  ? "text-foreground"
+                  : "text-foreground/60"
+              )}
             >
-              <div
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "w-10 px-0 hidden sm:inline-flex"
-                )}
-              >
-                <Icons.gitHub className="h-4 w-4" />
-                <span className="sr-only">GitHub</span>
-              </div>
+              {link.label}
             </Link>
-            <Link
-              href={siteConfig.links.twitter}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <div
-                className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  "w-10 px-0 hidden sm:inline-flex"
-                )}
-              >
-                <Icons.twitter className="h-4 w-4" />
-                <span className="sr-only">Twitter</span>
-              </div>
-            </Link>
-            <ModeToggle />
+          ))}
+        </nav>
+
+        {/* Dark Mode Toggle */}
+        <div className="flex items-center space-x-2">
+          <ModeToggle />
+
+          {/* Mobile Navigation */}
+          <div className="md:hidden">
             <MobileNav />
-          </nav>
+          </div>
         </div>
       </div>
     </header>
   );
 };
+
 export default Header;

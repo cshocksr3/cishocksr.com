@@ -5,14 +5,17 @@ import { sortPosts } from "@/lib/utils";
 
 const POSTS_PER_PAGE = 5;
 
+interface BlogSearchParams {
+  page?: string;
+}
+
 interface BlogPageProps {
-  searchParams: {
-    page?: string;
-  };
+  searchParams?: BlogSearchParams;
 }
 
 export default async function Blog({ searchParams }: BlogPageProps) {
-  const currentPage = Number(searchParams?.page) || 1;
+  const page = (await searchParams?.page) ?? "1";
+  const currentPage = parseInt(page, 10);
   const sortedPosts = sortPosts(posts.filter((post) => post.published));
   const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 

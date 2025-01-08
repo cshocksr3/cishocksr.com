@@ -24,7 +24,7 @@ const Header = () => {
         </div>
 
         {/* Navigation Links (Desktop) */}
-        <nav className="hidden md:flex space-x-6">
+        <nav className="hidden lg:flex space-x-6">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -46,7 +46,7 @@ const Header = () => {
           <ModeToggle />
 
           {/* Mobile Navigation */}
-          <div className="md:hidden">
+          <div className="sm:hidden">
             <MobileNav />
           </div>
         </div>

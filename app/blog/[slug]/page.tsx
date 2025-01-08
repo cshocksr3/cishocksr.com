@@ -5,15 +5,25 @@ import "@/styles/mdx.css";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 
+interface PostPageParams {
+  slug: string;
+}
 interface PostPageProps {
-  params: {
-    slug: string;
-  };
+  params: PostPageParams;
 }
 
-async function getPostFromParams(params: PostPageProps["params"]) {
-  const slug = params?.slug;
+async function getPostFromParams(params: PostPageParams) {
+  if (!params?.slug) {
+    console.error("Invalid or missing slug in params:", params);
+    return null;
+  }
+
+  const slug = params.slug;
   const post = posts.find((post) => post.slugAsParams === slug);
+
+  if (!post) {
+    console.error("No post found for slug:", slug);
+  }
 
   return post;
 }
@@ -24,7 +34,10 @@ export async function generateMetadata({
   const post = await getPostFromParams(params);
 
   if (!post) {
-    return {};
+    return {
+      title: "Post Not Found",
+      description: "The requested post could not be found.",
+    };
   }
 
   const ogSearchParams = new URLSearchParams();
@@ -57,15 +70,17 @@ export async function generateMetadata({
   };
 }
 
-export async function generateStaticParams(): Promise<
-  PostPageProps["params"][]
-> {
+export async function generateStaticParams(): Promise<PostPageParams[]> {
+  if (!posts || posts.length === 0) {
+    console.error("Post data is empty or undifined");
+    return [];
+  }
+
   const staticParams = posts.map((post) => ({
     slug: post.slugAsParams,
   }));
 
-  console.log("Generated static params:", staticParams); // Log params for debugging
-
+  console.log("Generated static params:", staticParams);
   return staticParams;
 }
 
